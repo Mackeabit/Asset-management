@@ -99,7 +99,7 @@ public class LoginPage {
 				case"회원가입":
 					
 					mainFrame.dispose();
-					//회원가입 페이지 들어갈 자리
+					new SignPage();
 					break;
 					
 				
