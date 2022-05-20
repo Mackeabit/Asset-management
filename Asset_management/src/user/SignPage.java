@@ -10,13 +10,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import dao.UserDAO;
+import vo.UserVO;
+
 public class SignPage {
+	
+	boolean check1 = false;
+	boolean check2 = false;
 
+	
 	public SignPage() {
-
 		// 프레임 생성
 		Frame mainFrame = new Frame("회원가입");
 		// 라벨 생성
@@ -44,8 +51,7 @@ public class SignPage {
 		Button sign = new Button("가입신청");
 		Button goMain = new Button("메인으로");
 
-		boolean check1 = false;
-		boolean check2 = false;
+
 
 		// 메인 프레임 설정
 		mainFrame.setResizable(false);
@@ -121,12 +127,12 @@ public class SignPage {
 		mainFrame.add(goMain);
 
 		// 중복체크 버튼 설정(true값 입력시 수정활성화)
-		checkAc2.setVisible(false);
-		checkID2.setVisible(false);
-
+		checkAc2.setVisible(check1);
+		checkID2.setVisible(check2);
+		
 		// 버튼 동작 설정
 		ActionListener al = new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -134,7 +140,9 @@ public class SignPage {
 				String id = idtf.getText(); // 아이디
 				String pwd = pwtf.getText(); // 비밀번호
 				String pwd2 = pwchecktf.getText(); // 비밀번호 확인
-
+				
+				
+				//유효성체크
 				if (!account.equals(actf.getText().replaceAll(" ", ""))) {
 					JOptionPane.showMessageDialog(mainFrame, "계좌번호에 공백이 포함되면 안됩니다.");
 				} else if (!id.equals(idtf.getText().replaceAll(" ", ""))) {
@@ -146,11 +154,26 @@ public class SignPage {
 					switch (e.getActionCommand()) {
 
 					case "계좌조회":
+						List<UserVO> list = UserDAO.getInstance().selectList();
+						int res = UserDAO.getInstance().checkList(list, account);
+						if(res==1) {
+							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 계좌번호 입니다.");
+						}else {
+							JOptionPane.showMessageDialog(mainFrame, "사용 가능한 계좌번호 입니다.");
+							check1 = true;
+						}
 						
 						break;
 
 					case "중복체크":
-
+						list = UserDAO.getInstance().selectList();
+						int res2 = UserDAO.getInstance().checkList(list, id);
+						if(res2 == 1) {
+							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 아이디 입니다.");
+						}else {
+							JOptionPane.showMessageDialog(mainFrame, "사용 가능한 아이디 입니다.");
+							check2 = true;
+						}
 						break;
 
 					case "계좌수정":
