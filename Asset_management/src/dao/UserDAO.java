@@ -123,6 +123,43 @@ public class UserDAO {
 	}//checkLIst
 	
 	
+	
+	
+	public void adminWrite() {
+		
+		//만들 폴더의 경로 설정(Admin,User)
+		String adminPath ="C:/java_db_test/Admin/";
+		String userPath ="C:/java_db_test/User/";
+		
+		//두가지를 동시에 만들 예정이라 배열로 저장
+		String[] path = {adminPath,userPath};
+		
+		//for문을 통해 폴더가 없을 경우 생성(초기 실행시 동작)
+		for(int i = 0; i<path.length; i++) {
+			File f = new File(path[i]);
+			if(!f.exists()) {
+				f.mkdirs();
+			}
+		}
+		
+		//BufferedWriter을 통해 Admin.txt와 내용 작성
+		BufferedWriter bw;
+		
+		try {
+			bw = new BufferedWriter(new FileWriter(path[0]+"Admin.txt"));
+			
+			bw.write("0,Admin,Admin,Admin,Admin");
+			
+			bw.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}//User,Admin 폴더 생성 및 Admin.txt파일 생성
+	
+	
 	public void datawrite() {
 		//DB생성 코드 작성
 		
