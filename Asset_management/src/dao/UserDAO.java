@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +82,53 @@ public class UserDAO {
 		return list;
 	}
 	
+	public int checkList(List<UserVO> list, String find) {
+		
+		//중복값 없을 시 반환해줄 res값 설정
+		int res = 1;
+		
+		//계좌번호는 편의상 9자리 고정이라 하고 진행
+		//계좌번호가 넘어왔다면 if문 안으로 진행
+		if(find.length() == 9) {
+			
+			for(int i = 0; i<list.size(); i++) {
+				
+				UserVO vo = list.get(i);
+				//계좌번호 중복이라면 res=0 반환
+				if(vo.getAccountNumber().equals(find)) {
+					res = 0;
+					break;
+				}
+				
+			}
+			
+		}else {
+			//아이디 중복 체크
+			for(int i = 0; i<list.size(); i++) {
+				
+				UserVO vo = list.get(i);
+				//중복되는 아이디가 존재한다면 res=0 반환
+				if(vo.getId().equals(find)) {
+					res = 0;
+					break;
+				}
+				
+			}
+		}
+		
+		
+		//res=0 --> 중복값 있음
+		//res=1 --> 중복값 없음
+		return res;
+	}//checkLIst
 	
 	
 	public void datawrite() {
 		//DB생성 코드 작성
+		
+		
+		
+		
 	}
 	
 	
