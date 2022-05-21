@@ -47,7 +47,7 @@ public class SignPage {
 		Button checkAc = new Button("계좌조회");
 		Button checkAc2 = new Button("계좌수정");
 		Button checkID = new Button("중복체크");
-		Button checkID2 = new Button("I D 수정");
+		Button checkID2 = new Button("ID수정");
 		Button sign = new Button("가입신청");
 		Button goMain = new Button("메인으로");
 
@@ -143,9 +143,9 @@ public class SignPage {
 				
 				
 				//유효성체크
-				if (!account.equals(actf.getText().replaceAll(" ", ""))) {
+				if (!account.equals(actf.getText().replaceAll(" ", ""))||account.equals("")) {
 					JOptionPane.showMessageDialog(mainFrame, "계좌번호에 공백이 포함되면 안됩니다.");
-				} else if (!id.equals(idtf.getText().replaceAll(" ", ""))) {
+				} else if (!id.equals(idtf.getText().replaceAll(" ", ""))||id.equals("")) {
 					JOptionPane.showMessageDialog(mainFrame, "아이디에 공백이 포함되면 안됩니다.");
 				} else if (!pwd.equals(pwtf.getText().replaceAll(" ", ""))) {
 					JOptionPane.showMessageDialog(mainFrame, "비밀번호에 공백이 포함되면 안됩니다.");
@@ -154,38 +154,60 @@ public class SignPage {
 					switch (e.getActionCommand()) {
 
 					case "계좌조회":
+						if(!account.matches("[0-9]{9}$")) {
+							JOptionPane.showMessageDialog(mainFrame, "계좌번호는 9자리를 입력하셔야 합니다.");
+							break;
+						}
+						//조회 및 중복체크를 위해 전체DB를 list에 저장
 						List<UserVO> list = UserDAO.getInstance().selectList();
+						//res에 1이 반환되면 DB에 데이터 없다는 뜻
 						int res = UserDAO.getInstance().checkList(list, account);
 						if(res==1) {
-							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 계좌번호 입니다.");
-						}else {
 							JOptionPane.showMessageDialog(mainFrame, "사용 가능한 계좌번호 입니다.");
+							//사용이 가능하면 텍스트필드를 잠그고, 버튼을 계좌조회 -> 계좌수정으로 바꿔준다.
 							check1 = true;
+							actf.setEnabled(!check1);
+							checkAc.setVisible(!check1);
+							checkAc2.setVisible(check1);
+						}else {
+							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 계좌번호 입니다.");
 						}
 						
 						break;
 
 					case "중복체크":
+						//조회 및 중복체크를 위해 전체DB를 list에 저장
 						list = UserDAO.getInstance().selectList();
+						//res에 1이 반환되면 DB에 데이터 없다는 뜻
 						int res2 = UserDAO.getInstance().checkList(list, id);
 						if(res2 == 1) {
-							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 아이디 입니다.");
-						}else {
 							JOptionPane.showMessageDialog(mainFrame, "사용 가능한 아이디 입니다.");
+							//사용이 가능하면 텍스트필드를 잠그고, 버튼을 중복체크 -> ID수정으로 바꿔준다.
 							check2 = true;
+							idtf.setEnabled(!check2);
+							checkID.setVisible(!check2);
+							checkID2.setVisible(check2);
+						}else {
+							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 아이디 입니다.");
 						}
 						break;
 
 					case "계좌수정":
-
+						check1 = false;
+						actf.setEnabled(!check1);
+						checkAc.setVisible(!check1);
+						checkAc2.setVisible(check1);
 						break;
 
 					case "ID수정":
-
+						check2 = false;
+						idtf.setEnabled(!check2);
+						checkID.setVisible(!check2);
+						checkID2.setVisible(check2);
 						break;
 
 					case "가입신청":
-
+						
 						break;
 
 					case "메인으로":
