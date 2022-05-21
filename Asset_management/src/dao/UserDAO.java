@@ -3,9 +3,11 @@ package dao;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +48,7 @@ public class UserDAO {
 			for(int i = 0; i<data.length; i++) {
 				
 				//경로는 기본경로 + 아이디 + data.txt
-				BufferedReader br = new BufferedReader(new FileReader(path+data[i]+sql));
-				
+				BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path+data[i]+sql),"utf-8"));
 				//line은 읽어오는 용도, content는 line을 저장할 용도
 				String line="";
 				String content = "";
@@ -63,11 +64,10 @@ public class UserDAO {
 				//나눠진 문자열을 vo에 순서대로 저장
 				//list에 세팅된 vo를 저장
 				UserVO vo = new UserVO();
-				vo.setIdx(rs[0]);
-				vo.setName(rs[1]);
-				vo.setId(rs[2]);
-				vo.setPwd(rs[3]);
-				vo.setAccountNumber(rs[4]);
+				vo.setName(rs[0]);
+				vo.setId(rs[1]);
+				vo.setPwd(rs[2]);
+				vo.setAccountNumber(rs[3]);
 				list.add(vo);
 				br.close();
 				
@@ -77,6 +77,7 @@ public class UserDAO {
 
 			e.printStackTrace();
 		}
+		
 		
 		//저장이 모두 끝난 list반환
 		return list;
@@ -90,9 +91,8 @@ public class UserDAO {
 		//계좌번호는 편의상 9자리 고정이라 하고 진행
 		//계좌번호가 넘어왔다면 if문 안으로 진행
 		if(find.length() == 9) {
-			
+			//계좌번호 중복 체크
 			for(int i = 0; i<list.size(); i++) {
-				
 				UserVO vo = list.get(i);
 				//계좌번호 중복이라면 res=0 반환
 				if(vo.getAccountNumber().equals(find)) {
@@ -105,7 +105,6 @@ public class UserDAO {
 		}else {
 			//아이디 중복 체크
 			for(int i = 0; i<list.size(); i++) {
-				
 				UserVO vo = list.get(i);
 				//중복되는 아이디가 존재한다면 res=0 반환
 				if(vo.getId().equals(find)) {
@@ -117,8 +116,8 @@ public class UserDAO {
 		}
 		
 		
-		//res=0 --> 중복값 있음
-		//res=1 --> 중복값 없음
+		//res=0 --> 중복값 있음, 사용불가
+		//res=1 --> 중복값 없음, 사용가능
 		return res;
 	}//checkLIst
 	
@@ -148,7 +147,7 @@ public class UserDAO {
 		try {
 			bw = new BufferedWriter(new FileWriter(path[0]+"Admin.txt"));
 			
-			bw.write("0,Admin,Admin,Admin,Admin");
+			bw.write("Admin,Admin,Admin,Admin");
 			
 			bw.close();
 			
@@ -160,13 +159,36 @@ public class UserDAO {
 	}//User,Admin 폴더 생성 및 Admin.txt파일 생성
 	
 	
-	public void datawrite() {
+	public void userWrite(UserVO vo) {
 		//DB생성 코드 작성
+		String userPath ="C:/java_db_test/User/"+vo.getId();
+		
+		BufferedWriter bw;
+		
+		try {
+			
+			String[] content = {vo.getName(),vo.getId(),vo.getPwd(),vo.getAccountNumber()};
+			
+			for(int i = 0; i<content.length; i++) {
+				bw = new BufferedWriter(new FileWriter(userPath+"/data.txt"));
+				
+				if(i==4) {
+					bw.write(content[i]);
+					bw.close();
+					break;
+				}
+				
+				bw.write(content[i]+",");
+			}
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		
 		
-		
-	}
+	}//User db저장
 	
 	
 	
