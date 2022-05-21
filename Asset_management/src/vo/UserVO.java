@@ -1,14 +1,8 @@
 package vo;
 
 public class UserVO {
-	private String idx, name, id, pwd, accountNumber;
+	private String name, id, pwd, accountNumber;
 	
-	public String getIdx() {
-		return idx;
-	}
-	public void setIdx(String idx) {
-		this.idx = idx;
-	}
 	public String getName() {
 		return name;
 	}
