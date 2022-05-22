@@ -179,8 +179,8 @@ public class SignPage {
 						//조회 및 중복체크를 위해 전체DB를 list에 저장
 						list = UserDAO.getInstance().selectList();
 						//res에 1이 반환되면 DB에 데이터 없다는 뜻
-						int res2 = UserDAO.getInstance().checkList(list, id);
-						if(res2 == 1) {
+						res = UserDAO.getInstance().checkList(list, id);
+						if(res == 1) {
 							JOptionPane.showMessageDialog(mainFrame, "사용 가능한 아이디 입니다.");
 							//사용이 가능하면 텍스트필드를 잠그고, 버튼을 중복체크 -> ID수정으로 바꿔준다.
 							check2 = true;
@@ -207,6 +207,34 @@ public class SignPage {
 						break;
 
 					case "가입신청":
+						
+						if(!pwd.equals(pwd2)||pwd.equals("")) {
+							JOptionPane.showMessageDialog(mainFrame, "비밀번호가 다릅니다.");
+							break;
+						}
+						
+						if(!check1) {
+							JOptionPane.showMessageDialog(mainFrame, "계좌조회를 해주세요.");
+						}else if(!check2){
+							JOptionPane.showMessageDialog(mainFrame, "아이디 중복체크를 해주세요.");
+						}else {
+							
+							UserVO vo = new UserVO();
+							vo.setId(id);
+							vo.setPwd(pwd);
+							vo.setAccountNumber(account);
+							
+							res = UserDAO.getInstance().userWrite(vo);
+							
+							if(res > 0) {
+								mainFrame.dispose();
+								new LoginPage();
+								JOptionPane.showMessageDialog(mainFrame, "회원가입이 완료되었습니다.");
+							}else {
+								
+							}
+							
+						}
 						
 						break;
 
