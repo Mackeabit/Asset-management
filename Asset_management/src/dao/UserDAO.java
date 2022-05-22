@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,10 +66,10 @@ public class UserDAO {
 				//나눠진 문자열을 vo에 순서대로 저장
 				//list에 세팅된 vo를 저장
 				UserVO vo = new UserVO();
-				vo.setName(rs[0]);
-				vo.setId(rs[1]);
-				vo.setPwd(rs[2]);
-				vo.setAccountNumber(rs[3]);
+				vo.setId(rs[0]);
+				vo.setPwd(rs[1]);
+				vo.setAccountNumber(rs[2]);
+				vo.setMoney(Integer.parseInt(rs[3]));
 				list.add(vo);
 				br.close();
 				
@@ -143,11 +145,10 @@ public class UserDAO {
 		
 		//BufferedWriter을 통해 Admin.txt와 내용 작성
 		BufferedWriter bw;
-		
 		try {
-			bw = new BufferedWriter(new FileWriter(path[0]+"Admin.txt"));
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path[0]+"Admin.txt"),"utf-8"));
 			
-			bw.write("Admin,Admin,Admin,Admin");
+			bw.write("Admin,Admin,Admin");
 			
 			bw.close();
 			
@@ -159,26 +160,37 @@ public class UserDAO {
 	}//User,Admin 폴더 생성 및 Admin.txt파일 생성
 	
 	
-	public void userWrite(UserVO vo) {
+	public int userWrite(UserVO vo) {
+		
+		int res = 0;
+		
 		//DB생성 코드 작성
 		String userPath ="C:/java_db_test/User/"+vo.getId();
+		
+		File f = new File(userPath);
+		
+		if(!f.exists()) {
+			f.mkdirs();
+		}
 		
 		BufferedWriter bw;
 		
 		try {
 			
-			String[] content = {vo.getName(),vo.getId(),vo.getPwd(),vo.getAccountNumber()};
+
+			String[] content = {vo.getId(),vo.getPwd(),vo.getAccountNumber()};
 			
 			for(int i = 0; i<content.length; i++) {
-				bw = new BufferedWriter(new FileWriter(userPath+"/data.txt"));
-				
-				if(i==4) {
+				bw = new BufferedWriter(new FileWriter(userPath+"/data.txt", true));
+				if(i==3) {
 					bw.write(content[i]);
 					bw.close();
+					res = 1;
 					break;
 				}
 				
 				bw.write(content[i]+",");
+				bw.close();
 			}
 			
 			
@@ -186,7 +198,7 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		
-		
+		return res;
 		
 	}//User db저장
 	
