@@ -1,13 +1,14 @@
 package vo;
 
 public class UserVO {
-	private String name, id, pwd, accountNumber;
+	private int money;
+	private String id, pwd, accountNumber;
 	
-	public String getName() {
-		return name;
+	public int getMoney() {
+		return money;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setMoney(int money) {
+		this.money = money;
 	}
 	public String getId() {
 		return id;
