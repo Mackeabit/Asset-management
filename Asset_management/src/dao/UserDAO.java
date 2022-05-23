@@ -223,6 +223,32 @@ public class UserDAO {
 	}//User db저장
 	
 	
+	public int del(String id) {
+		
+		int res = 0;
+		
+		//경로 설정
+		String path ="C:/java_db_test/user/"+id;
+		
+		//경로내의 파일리스트를 배열로 저장
+		//각 폴더명을 ID로 만들 예정, 저장되어있는 회원들의 아이디를 모두 불러오는 작업.
+		File file = new File(path);
+		File[] fileList = file.listFiles();
+		
+		for(int i = 0; i<fileList.length; i++) {
+			fileList[i].delete();
+		}
+		file.delete();
+		
+		if(!file.exists()) {
+			
+			res=1;
+		}
+			
+			
+		
+		return res;
+	}
 	
 	
 }
