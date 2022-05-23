@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JOptionPane;
+
+import dao.UserDAO;
 import vo.UserVO;
 
 public class UserPage {
@@ -95,9 +98,18 @@ public class UserPage {
 					break;
 				
 				case"회원탈퇴" :
+					int res = UserDAO.getInstance().del(vo.getId());
 					
-					mainFrame.dispose();
+					if(res == 1) {
+						mainFrame.dispose();
+						new LoginPage();
+						break;
+						
+					}else {
+						JOptionPane.showMessageDialog(mainFrame, "삭제에 실패하였습니다.");
+					}
 					break;
+					
 					
 				case"거래내역":
 					mainFrame.dispose();
