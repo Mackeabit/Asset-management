@@ -10,9 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import dao.UserDAO;
+import vo.UserVO;
 
 public class LoginPage {
 	public LoginPage() {
@@ -111,7 +116,35 @@ public class LoginPage {
 				
 				case"로그인":
 					
-					//로그인 판단 코드 작성 필요
+					List<UserVO> list = UserDAO.getInstance().selectList();
+					String id = idt.getText().trim();
+					String pwd = pwt.getText().trim();
+					
+					if(id.equals("")) {
+						JOptionPane.showMessageDialog(mainFrame, "아이디를 입력해주세요.");
+						break;
+					}else if(pwd.equals("")) {
+						JOptionPane.showMessageDialog(mainFrame, "비밀번호를 입력해주세요.");
+						break;
+					}
+					
+					int res = UserDAO.getInstance().checkList(list, id);
+					
+					if(res == 1) {
+						JOptionPane.showMessageDialog(mainFrame, "존재하지 않는 아이디 입니다.");
+						break;
+					}
+					
+					UserVO vo = UserDAO.getInstance().selectOne(list, id);
+					
+					if(pwd.equals(vo.getPwd())) {
+						mainFrame.dispose();
+						new UserPage(vo);
+						break;
+					}else {
+						JOptionPane.showMessageDialog(mainFrame, "비밀번호가 일치하지 않습니다.");
+					}
+					
 					break;
 					
 				}//switch
