@@ -18,11 +18,10 @@ import dao.UserDAO;
 import vo.UserVO;
 
 public class SignPage {
-	
+
 	boolean check1 = false;
 	boolean check2 = false;
 
-	
 	public SignPage() {
 		// 프레임 생성
 		Frame mainFrame = new Frame("회원가입");
@@ -50,8 +49,6 @@ public class SignPage {
 		Button checkID2 = new Button("ID수정");
 		Button sign = new Button("가입신청");
 		Button goMain = new Button("메인으로");
-
-
 
 		// 메인 프레임 설정
 		mainFrame.setResizable(false);
@@ -129,10 +126,10 @@ public class SignPage {
 		// 중복체크 버튼 설정(true값 입력시 수정활성화)
 		checkAc2.setVisible(check1);
 		checkID2.setVisible(check2);
-		
+
 		// 버튼 동작 설정
 		ActionListener al = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
@@ -140,111 +137,112 @@ public class SignPage {
 				String id = idtf.getText(); // 아이디
 				String pwd = pwtf.getText(); // 비밀번호
 				String pwd2 = pwchecktf.getText(); // 비밀번호 확인
-				
-				
-				//유효성체크
-				if (!account.equals(actf.getText().replaceAll(" ", ""))||account.equals("")) {
-					JOptionPane.showMessageDialog(mainFrame, "계좌번호에 공백이 포함되면 안됩니다.");
-				} else if (!id.equals(idtf.getText().replaceAll(" ", ""))||id.equals("")) {
-					JOptionPane.showMessageDialog(mainFrame, "아이디에 공백이 포함되면 안됩니다.");
-				} else if (!pwd.equals(pwtf.getText().replaceAll(" ", ""))) {
-					JOptionPane.showMessageDialog(mainFrame, "비밀번호에 공백이 포함되면 안됩니다.");
-				} else {
 
-					switch (e.getActionCommand()) {
+				switch (e.getActionCommand()) {
 
-					case "계좌조회":
-						if(!account.matches("[0-9]{9}$")) {
-							JOptionPane.showMessageDialog(mainFrame, "계좌번호는 9자리를 입력하셔야 합니다.");
-							break;
-						}
-						//조회 및 중복체크를 위해 전체DB를 list에 저장
-						List<UserVO> list = UserDAO.getInstance().selectList();
-						//res에 1이 반환되면 DB에 데이터 없다는 뜻
-						int res = UserDAO.getInstance().checkList(list, account);
-						if(res==1) {
-							JOptionPane.showMessageDialog(mainFrame, "사용 가능한 계좌번호 입니다.");
-							//사용이 가능하면 텍스트필드를 잠그고, 버튼을 계좌조회 -> 계좌수정으로 바꿔준다.
-							check1 = true;
-							actf.setEnabled(!check1);
-							checkAc.setVisible(!check1);
-							checkAc2.setVisible(check1);
-						}else {
-							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 계좌번호 입니다.");
-						}
-						
+				case "계좌조회":
+
+					if (!account.equals(actf.getText().replaceAll(" ", "")) || account.equals("")) {
+						JOptionPane.showMessageDialog(mainFrame, "계좌번호에 공백이 포함되면 안됩니다.");
+					}
+
+					if (!account.matches("[0-9]{9}$")) {
+						JOptionPane.showMessageDialog(mainFrame, "계좌번호는 9자리를 입력하셔야 합니다.");
 						break;
-
-					case "중복체크":
-						//조회 및 중복체크를 위해 전체DB를 list에 저장
-						list = UserDAO.getInstance().selectList();
-						//res에 1이 반환되면 DB에 데이터 없다는 뜻
-						res = UserDAO.getInstance().checkList(list, id);
-						if(res == 1) {
-							JOptionPane.showMessageDialog(mainFrame, "사용 가능한 아이디 입니다.");
-							//사용이 가능하면 텍스트필드를 잠그고, 버튼을 중복체크 -> ID수정으로 바꿔준다.
-							check2 = true;
-							idtf.setEnabled(!check2);
-							checkID.setVisible(!check2);
-							checkID2.setVisible(check2);
-						}else {
-							JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 아이디 입니다.");
-						}
-						break;
-
-					case "계좌수정":
-						check1 = false;
+					}
+					// 조회 및 중복체크를 위해 전체DB를 list에 저장
+					List<UserVO> list = UserDAO.getInstance().selectList();
+					// res에 1이 반환되면 DB에 데이터 없다는 뜻
+					int res = UserDAO.getInstance().checkList(list, account);
+					if (res == 1) {
+						JOptionPane.showMessageDialog(mainFrame, "사용 가능한 계좌번호 입니다.");
+						// 사용이 가능하면 텍스트필드를 잠그고, 버튼을 계좌조회 -> 계좌수정으로 바꿔준다.
+						check1 = true;
 						actf.setEnabled(!check1);
 						checkAc.setVisible(!check1);
 						checkAc2.setVisible(check1);
-						break;
+					} else {
+						JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 계좌번호 입니다.");
+					}
 
-					case "ID수정":
-						check2 = false;
+					break;
+
+				case "중복체크":
+
+					if (!id.equals(idtf.getText().replaceAll(" ", "")) || id.equals("")) {
+						JOptionPane.showMessageDialog(mainFrame, "아이디에 공백이 포함되면 안됩니다.");
+					}
+					// 조회 및 중복체크를 위해 전체DB를 list에 저장
+					list = UserDAO.getInstance().selectList();
+					// res에 1이 반환되면 DB에 데이터 없다는 뜻
+					res = UserDAO.getInstance().checkList(list, id);
+					if (res == 1) {
+						JOptionPane.showMessageDialog(mainFrame, "사용 가능한 아이디 입니다.");
+						// 사용이 가능하면 텍스트필드를 잠그고, 버튼을 중복체크 -> ID수정으로 바꿔준다.
+						check2 = true;
 						idtf.setEnabled(!check2);
 						checkID.setVisible(!check2);
 						checkID2.setVisible(check2);
-						break;
+					} else {
+						JOptionPane.showMessageDialog(mainFrame, "이미 존재하는 아이디 입니다.");
+					}
+					break;
 
-					case "가입신청":
-						
-						if(!pwd.equals(pwd2)||pwd.equals("")) {
-							JOptionPane.showMessageDialog(mainFrame, "비밀번호가 다릅니다.");
-							break;
+				case "계좌수정":
+					check1 = false;
+					actf.setEnabled(!check1);
+					checkAc.setVisible(!check1);
+					checkAc2.setVisible(check1);
+					break;
+
+				case "ID수정":
+					check2 = false;
+					idtf.setEnabled(!check2);
+					checkID.setVisible(!check2);
+					checkID2.setVisible(check2);
+					break;
+
+				case "가입신청":
+
+					if (!pwd.equals(pwtf.getText().replaceAll(" ", ""))) {
+						JOptionPane.showMessageDialog(mainFrame, "비밀번호에 공백이 포함되면 안됩니다.");
+					}
+
+					if (!pwd.equals(pwd2) || pwd.equals("")) {
+						JOptionPane.showMessageDialog(mainFrame, "비밀번호가 다릅니다.");
+						break;
+					}
+
+					if (!check1) {
+						JOptionPane.showMessageDialog(mainFrame, "계좌조회를 해주세요.");
+					} else if (!check2) {
+						JOptionPane.showMessageDialog(mainFrame, "아이디 중복체크를 해주세요.");
+					} else {
+
+						UserVO vo = new UserVO();
+						vo.setId(id);
+						vo.setPwd(pwd);
+						vo.setAccountNumber(account);
+
+						res = UserDAO.getInstance().userWrite(vo);
+						if (res > 0) {
+							mainFrame.dispose();
+							new LoginPage();
+							JOptionPane.showMessageDialog(mainFrame, "회원가입이 완료되었습니다.");
+						} else {
+
 						}
-						
-						if(!check1) {
-							JOptionPane.showMessageDialog(mainFrame, "계좌조회를 해주세요.");
-						}else if(!check2){
-							JOptionPane.showMessageDialog(mainFrame, "아이디 중복체크를 해주세요.");
-						}else {
-							
-							UserVO vo = new UserVO();
-							vo.setId(id);
-							vo.setPwd(pwd);
-							vo.setAccountNumber(account);
-							
-							res = UserDAO.getInstance().userWrite(vo);
-							
-							if(res > 0) {
-								mainFrame.dispose();
-								new LoginPage();
-								JOptionPane.showMessageDialog(mainFrame, "회원가입이 완료되었습니다.");
-							}else {
-								
-							}
-							
-						}
-						
-						break;
-
-					case "메인으로":
-
-						mainFrame.dispose();
-						new LoginPage();
-						break;
 
 					}
+
+					break;
+
+				case "메인으로":
+
+					mainFrame.dispose();
+					new LoginPage();
+					break;
+
 				}
 			}
 		};
