@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,6 +25,25 @@ public class UserDAO {
 		//생성된 객체정보를 반환
 		return single;
 	}// getInstance();
+	
+	
+	public UserVO selectOne(List<UserVO> list, String id) {
+		
+		int i = 0;
+		//아이디 중복 체크
+		for(i = 0; i<list.size(); i++) {
+			UserVO vo = list.get(i);
+			//중복되는 아이디가 존재한다면 res=0 반환
+			if(vo.getId().equals(id)) {
+				break;
+			}
+		}
+		
+		UserVO vo = list.get(i);
+		
+		return vo;
+	}
+	
 	
 	public List<UserVO> selectList() {
 
@@ -59,8 +77,8 @@ public class UserDAO {
 					content += line;
 				}
 				
-				//','를 구분자로 저장하기에 각 구분자에 맞게 나눠주기
-				String[] rs = content.split(",");
+				//'/'를 구분자로 저장하기에 각 구분자에 맞게 나눠주기
+				String[] rs = content.split("/");
 				
 				
 				//나눠진 문자열을 vo에 순서대로 저장
@@ -69,7 +87,7 @@ public class UserDAO {
 				vo.setId(rs[0]);
 				vo.setPwd(rs[1]);
 				vo.setAccountNumber(rs[2]);
-				vo.setMoney(Integer.parseInt(rs[3]));
+				vo.setMoney(Integer.parseInt(rs[3].replaceAll(",", "")));
 				list.add(vo);
 				br.close();
 				
@@ -92,7 +110,7 @@ public class UserDAO {
 		
 		//계좌번호는 편의상 9자리 고정이라 하고 진행
 		//계좌번호가 넘어왔다면 if문 안으로 진행
-		if(find.length() == 9) {
+		if(find.matches("[0-9]{9}$")) {
 			//계좌번호 중복 체크
 			for(int i = 0; i<list.size(); i++) {
 				UserVO vo = list.get(i);
@@ -148,7 +166,7 @@ public class UserDAO {
 		try {
 			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path[0]+"Admin.txt"),"utf-8"));
 			
-			bw.write("Admin,Admin,Admin");
+			bw.write("Admin/Admin/Admin");
 			
 			bw.close();
 			
@@ -177,8 +195,10 @@ public class UserDAO {
 		
 		try {
 			
-
-			String[] content = {vo.getId(),vo.getPwd(),vo.getAccountNumber()};
+			//회원가입 시 보너스 지급(10,000원)
+			int money = 10000;
+			
+			String[] content = {vo.getId(),vo.getPwd(),vo.getAccountNumber(),String.format("%,d", money)};
 			
 			for(int i = 0; i<content.length; i++) {
 				bw = new BufferedWriter(new FileWriter(userPath+"/data.txt", true));
@@ -189,7 +209,7 @@ public class UserDAO {
 					break;
 				}
 				
-				bw.write(content[i]+",");
+				bw.write(content[i]+"/");
 				bw.close();
 			}
 			
