@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -116,7 +115,6 @@ public class LoginPage {
 				
 				case"로그인":
 					
-					List<UserVO> list = UserDAO.getInstance().selectList();
 					String id = idt.getText().trim();
 					String pwd = pwt.getText().trim();
 					
@@ -128,14 +126,14 @@ public class LoginPage {
 						break;
 					}
 					
-					int res = UserDAO.getInstance().checkList(list, id);
+					int res = UserDAO.getInstance().checkList(id);
 					
 					if(res == 1) {
 						JOptionPane.showMessageDialog(mainFrame, "존재하지 않는 아이디 입니다.");
 						break;
 					}
 					
-					UserVO vo = UserDAO.getInstance().selectOne(list, id);
+					UserVO vo = UserDAO.getInstance().selectOne(id);
 					
 					if(pwd.equals(vo.getPwd())) {
 						mainFrame.dispose();
