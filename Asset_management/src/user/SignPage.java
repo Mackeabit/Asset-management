@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -150,10 +149,8 @@ public class SignPage {
 						JOptionPane.showMessageDialog(mainFrame, "계좌번호는 9자리를 입력하셔야 합니다.");
 						break;
 					}
-					// 조회 및 중복체크를 위해 전체DB를 list에 저장
-					List<UserVO> list = UserDAO.getInstance().selectList();
 					// res에 1이 반환되면 DB에 데이터 없다는 뜻
-					int res = UserDAO.getInstance().checkList(list, account);
+					int res = UserDAO.getInstance().checkList(account);
 					if (res == 1) {
 						JOptionPane.showMessageDialog(mainFrame, "사용 가능한 계좌번호 입니다.");
 						// 사용이 가능하면 텍스트필드를 잠그고, 버튼을 계좌조회 -> 계좌수정으로 바꿔준다.
@@ -172,10 +169,8 @@ public class SignPage {
 					if (!id.equals(idtf.getText().replaceAll(" ", "")) || id.equals("")) {
 						JOptionPane.showMessageDialog(mainFrame, "아이디에 공백이 포함되면 안됩니다.");
 					}
-					// 조회 및 중복체크를 위해 전체DB를 list에 저장
-					list = UserDAO.getInstance().selectList();
 					// res에 1이 반환되면 DB에 데이터 없다는 뜻
-					res = UserDAO.getInstance().checkList(list, id);
+					res = UserDAO.getInstance().checkList(id);
 					if (res == 1) {
 						JOptionPane.showMessageDialog(mainFrame, "사용 가능한 아이디 입니다.");
 						// 사용이 가능하면 텍스트필드를 잠그고, 버튼을 중복체크 -> ID수정으로 바꿔준다.
