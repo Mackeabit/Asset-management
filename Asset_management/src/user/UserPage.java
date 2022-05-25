@@ -19,12 +19,14 @@ public class UserPage {
 
 	public UserPage(UserVO vo) {
 		
-		Frame mainFrame = new Frame(vo.getId()+"님 환영합니다.");
+		UserVO voUpdate = UserDAO.getInstance().selectOne(vo.getId());
+		
+		Frame mainFrame = new Frame(voUpdate.getId()+"님 환영합니다.");
 		Font mainFont = new Font("", Font.BOLD, 40);
 		Font subFont = new Font("", Font.PLAIN, 20);
-		Label serviceL = new Label("나의 계좌번호 : "+vo.getAccountNumber(),Label.LEFT);
+		Label serviceL = new Label("나의 계좌번호 : "+voUpdate.getAccountNumber(),Label.LEFT);
 		Label account = new Label("통장 잔고",Label.RIGHT);
-		Label accountM = new Label(String.format("%,d", vo.getMoney())+"원",Label.CENTER);
+		Label accountM = new Label(String.format("%,d", voUpdate.getMoney())+"원",Label.CENTER);
 		Button sendM = new Button("이체");
 		Button checkM = new Button("거래내역");
 		Button deluser = new Button("회원탈퇴");
@@ -93,12 +95,12 @@ public class UserPage {
 					
 				
 				case"이체" :
-					
+					new TransferPage(voUpdate);
 					mainFrame.dispose();
 					break;
 				
 				case"회원탈퇴" :
-					int res = UserDAO.getInstance().del(vo.getId());
+					int res = UserDAO.getInstance().del(voUpdate.getId());
 					
 					if(res == 1) {
 						mainFrame.dispose();
