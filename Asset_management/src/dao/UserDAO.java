@@ -31,31 +31,28 @@ public class UserDAO {
 		// 저장되어있는 전체 정보 조회
 		List<UserVO> list = UserDAO.getInstance().selectList();
 
-		int i = 0;
-
 		UserVO vo = null;
 
 		if (find.matches("[0-9]{9}$")) {
 			// 계좌번호 중복 체크
-			for (i = 0; i < list.size(); i++) {
+			for (int i = 0; i < list.size(); i++) {
 				vo = list.get(i);
 				// 계좌번호가 존재하는 구간의 i값 얻기
 				if (vo.getAccountNumber().equals(find))
 					break;
-				
+
 			}
 
 		} else {
 			// 아이디 중복 체크
-			for (i = 0; i < list.size(); i++) {
+			for (int i = 0; i < list.size(); i++) {
 				vo = list.get(i);
 				// 아이디가 존재하는 구간의 i값 얻기
 				if (vo.getId().equals(find))
 					break;
-				
+
 			}
 		}
-		vo = list.get(i);
 
 		return vo;
 	}
@@ -222,11 +219,11 @@ public class UserDAO {
 				bw.write(content[i] + "/");
 				bw.close();
 			}
-			
-			//거래내역 txt 생성
+
+			// 거래내역 txt 생성
 			bw = new BufferedWriter(new FileWriter(userPath + "/Acc.txt"));
 			bw.close();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -260,72 +257,61 @@ public class UserDAO {
 		return res;
 	}
 
-	
-	public int transWrite(UserVO vo, UserVO vo1, int sendMoney, int nowMoney) {
-		
-		//1.보내는 사람 잔액을 바꿔주기
-		//2.보내는 사람 거래내역 생성하여, 받는사람 : 계좌번호, 보낸금액 : 보낸금액, 잔액 : 잔액 형식으로 작성하기
-		//3.받는 사람 잔액 바꿔주기
-		//4.받는 사람 거래내역 생성하여, 보낸사람 : 계좌번호, 받은금액 : 받은금액,  잔액 : 잔액 형식으로 작성하기
-		
-		//vo1 = 보내는사람 정보
-		//vo = 받는사람 정보
-		//sendMoney = 보내는 돈
-		//nowMoney = 보낸사람 계좌에 남은 돈
-		//resMoney = 받는사람 계좌에 남은 돈
-		
-		int res = 0;
-		int resMoney = vo.getMoney()+sendMoney;
-		
+	public void transWrite(UserVO vo, UserVO vo1, int sendMoney, int nowMoney) {
+
+		// 1.보내는 사람 잔액을 바꿔주기
+		// 2.보내는 사람 거래내역 생성하여, 받는사람 : 계좌번호, 보낸금액 : 보낸금액, 잔액 : 잔액 형식으로 작성하기
+		// 3.받는 사람 잔액 바꿔주기
+		// 4.받는 사람 거래내역 생성하여, 보낸사람 : 계좌번호, 받은금액 : 받은금액, 잔액 : 잔액 형식으로 작성하기
+
+		// vo1 = 보내는사람 정보
+		// vo = 받는사람 정보
+		// sendMoney = 보내는 돈
+		// nowMoney = 보낸사람 계좌에 남은 돈
+		// resMoney = 받는사람 계좌에 남은 돈
+
+		int resMoney = vo.getMoney() + sendMoney;
+
 		String path = "C:/java_db_test/user/";
-		String[][] content = {{ vo1.getId(), vo1.getPwd(), vo1.getAccountNumber(), String.format("%,d", nowMoney)},
-								{ vo.getId(), vo.getPwd(), vo.getAccountNumber(), String.format("%,d", resMoney) } };
-//		String[] contentVO = { vo.getId(), vo.getPwd(), vo.getAccountNumber(), String.format("%,d", resMoney) };
-		
-		String[][] accArr = {{vo1.getId(),vo1.getAccountNumber(),String.format("%,d", sendMoney),String.format("%,d", nowMoney)},
-							{vo.getId(),vo.getAccountNumber(),String.format("%,d", sendMoney),String.format("%,d", resMoney)}};
-		
+
+		String[] accArr = { vo1.getId(), vo.getId() };
 
 		BufferedWriter bw;
 
 		try {
 
-			for (int i = 0; i < content.length; i++) {
-				
-				for (int j = 0; j < content[i].length; j++) {
-					if(j == 0) {
-						bw = new BufferedWriter(new FileWriter(path + content[i][0] + "/data.txt"));
-					}else {
-						bw = new BufferedWriter(new FileWriter(path + content[i][0] + "/data.txt",true));
-					}
-					if (j == 3) {
-						bw.write(content[i][j]);
-						bw.close();
-					}
-					
-					bw.write(content[i][j] + "/");
+			for (int i = 0; i < accArr.length; i++) {
+
+				bw = new BufferedWriter(new FileWriter(path + accArr[i] + "/data.txt"));
+				if (i > 0) {
+					bw.write(vo.getId() + "/" + vo.getPwd() + "/" + vo.getAccountNumber() + "/"
+							+ String.format("%,d", resMoney));
+					bw.close();
+				} else {
+					bw.write(vo1.getId() + "/" + vo1.getPwd() + "/" + vo1.getAccountNumber() + "/"
+							+ String.format("%,d", nowMoney));
 					bw.close();
 				}
-			}
-			
-			//거래내역 코드 작성해야함
 
+			}
+
+			for (int i = 0; i < accArr.length; i++) {
+
+				bw = new BufferedWriter(new FileWriter(path + accArr[i] + "/Acc.txt", true));
+				if (i > 0) {
+					bw.write("보낸 사람 : " + vo1.getAccountNumber() + "\n받은 금액 : " + String.format("%,d", sendMoney)
+							+ "\n통장 잔액 : " + String.format("%,d", resMoney) + "\n");
+					bw.close();
+				} else {
+					bw.write("받는 사람 : " + vo.getAccountNumber() + "\n보낸 금액 : " + String.format("%,d", sendMoney)
+							+ "\n통장 잔액 : " + String.format("%,d", nowMoney) + "\n");
+					bw.flush();
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return res;
-
 	}// User db저장
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
