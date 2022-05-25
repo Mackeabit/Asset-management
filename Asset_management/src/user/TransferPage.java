@@ -160,8 +160,8 @@ public class TransferPage {
 						} else {
 
 							JOptionPane.showMessageDialog(mainFrame, vo.getId() + "님의 계좌로 송금이 진행됩니다.");
-							int res = UserDAO.getInstance().transWrite(vo, vo1, payMoney, money);
-							
+							UserDAO.getInstance().transWrite(vo, vo1, payMoney, money);
+							new UserPage(vo1);
 							mainFrame.dispose();
 							
 
