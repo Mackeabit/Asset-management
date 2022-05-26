@@ -19,6 +19,8 @@ public class UserPage {
 
 	public UserPage(UserVO vo) {
 		
+		//new를 통해 호출할 때, vo에 최신화되지 못한 정보가 들어가있는 것을 방지하기 위해
+		//selecOne을 통한 최신화
 		UserVO voUpdate = UserDAO.getInstance().selectOne(vo.getId());
 		
 		Frame mainFrame = new Frame(voUpdate.getId()+"님 환영합니다.");
@@ -32,23 +34,19 @@ public class UserPage {
 		Button deluser = new Button("회원탈퇴");
 		Button logout = new Button("로그아웃");
 		
+		//mainFrame 세팅
 		mainFrame.setResizable(false);
-		//레이아웃 셋팅
 		mainFrame.setLayout(null);
-		
-		//Frame 활성
+		mainFrame.setBackground(Color.WHITE);
 		mainFrame.setVisible(true);
 		
-		//종료버튼 활성
+		//X버튼 활성
 		mainFrame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
-		
-		//배경색 설정
-		mainFrame.setBackground(Color.WHITE);
 		
 		//폰트, 색상설정
 		account.setFont(subFont);
@@ -88,21 +86,26 @@ public class UserPage {
 				switch(e.getActionCommand()) {
 				
 				case"로그아웃":
-					
+					//new를 통한 로그인 페이지 호출
 					mainFrame.dispose();
 					new LoginPage();
 					break;
 					
 				
 				case"이체" :
-					new TransferPage(voUpdate);
+					//new를 통한 이체 페이지 호출(현재 로그인한 유저의 vo 넘겨줌)
 					mainFrame.dispose();
+					new TransferPage(voUpdate);
 					break;
 				
 				case"회원탈퇴" :
+					
+					//DAO.del에 현재아이디를 보내는 형태로 삭제 진행
 					int res = UserDAO.getInstance().del(voUpdate.getId());
 					
+					//res값을 통해 삭제유무 확인,(0=삭제X,1=삭제O)
 					if(res == 1) {
+						//회원탈퇴 후 로그인페이지로 이동
 						mainFrame.dispose();
 						new LoginPage();
 						break;
@@ -114,7 +117,9 @@ public class UserPage {
 					
 					
 				case"거래내역":
+					//거래내역 페이지 호출(현재 로그인한 유저의 vo 넘겨줌)
 					mainFrame.dispose();
+					new TransHistory(voUpdate);
 					break;
 				
 				}//switch
@@ -122,6 +127,7 @@ public class UserPage {
 			}
 		};
 		
+		//버튼 동작 활성
 		sendM.addActionListener(al);
 		checkM.addActionListener(al);
 		logout.addActionListener(al);
