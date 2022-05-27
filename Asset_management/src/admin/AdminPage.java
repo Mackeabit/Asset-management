@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Label;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -13,8 +15,9 @@ import dao.AdminDAO;
 import vo.AdminVO;
 
 public class AdminPage {
+	
 	public AdminPage(AdminVO vo) {
-		
+
 		//dao 생성
 		AdminDAO dao = AdminDAO.getInstance();
 		
@@ -29,8 +32,15 @@ public class AdminPage {
 		// Lable 생성영역
 		Label lb_ad = new Label("Administrator");
 		Label lb_ci = new Label("회원관리");
-		Label lb_allMoney = new Label("총 자산");
-		Label lb_money = new Label(dao.totalMoney()+"원");
+		Label lb_allMoney;
+		Label lb_money;
+		if(vo.getAuth() == 0) {
+			lb_allMoney = new Label(vo.getId()+"계정");
+			lb_money = new Label("");
+		}else {
+			lb_allMoney = new Label("총 자산");
+			lb_money = new Label(dao.totalMoney()+"원");
+		}
 		// Font 생성영역
 		Font font_lb_ad = new Font("", Font.BOLD, 30);
 		Font font_lb_su = new Font("", Font.BOLD, 15);
@@ -39,12 +49,20 @@ public class AdminPage {
 		ImageIcon icon = new  ImageIcon("src/images2/boom.jpg");
 		JLabel bm = new JLabel(icon);
 		
-		mainFrame.setResizable(false);
-		// 레이아웃 자동배치 OFF
+		//메인프레인 세팅
+		mainFrame.setVisible(true);
 		mainFrame.setLayout(null);
-		// 프레임 사이즈 조절 불가
 		mainFrame.setResizable(false);
 
+		//X키 활성화
+		mainFrame.addWindowListener(new WindowAdapter() {
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		
 		// Font지정 영역
 		lb_ad.setFont(font_lb_ad);
 		lb_ci.setFont(font_Money);
