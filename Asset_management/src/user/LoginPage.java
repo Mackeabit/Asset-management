@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import admin.AdLoginPage;
 import dao.UserDAO;
 import vo.UserVO;
 
@@ -42,10 +43,11 @@ public class LoginPage {
 		ImageIcon icon = new  ImageIcon("src/images2/bank.jpg");
 		JLabel mainImage = new JLabel(icon);
 		
-		//메인프레인 설정
+		//메인프레임 설정
 		mainFrame.setLayout(null);
 		mainFrame.setVisible(true);
 		mainFrame.setBackground(Color.WHITE);
+		mainFrame.setResizable(false);
 		
 		//프레임,라벨,텍스트필드,버튼 등 배치
 		mainFrame.setBounds(480,200,450,550);
@@ -80,6 +82,8 @@ public class LoginPage {
 		idLabel.setForeground(Color.DARK_GRAY);
 		pwdLabel.setForeground(Color.DARK_GRAY);
 		
+		// pw 입력시 '*' 마스킹처리
+		pwt.setEchoChar('*');
 
 		//프레임에 등록
 		mainFrame.add(centerLabel);
@@ -110,7 +114,7 @@ public class LoginPage {
 				case"관리자" :
 					
 					mainFrame.dispose();
-					//관리자 페이지 들어갈 자리
+					new AdLoginPage();
 					break;
 				
 				case"로그인":
