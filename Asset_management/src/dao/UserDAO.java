@@ -155,6 +155,8 @@ public class UserDAO {
 				vo.setId(rs[0]);
 				vo.setPwd(rs[1]);
 				vo.setAccountNumber(rs[2]);
+				//현재 money는 10,000 으로 저장되어있기 때문에
+				//,를 ""로 바꾸고 int값으로 vo.Money에 저장 
 				vo.setMoney(Integer.parseInt(rs[3].replaceAll(",", "")));
 				list.add(vo);
 				br.close();
@@ -227,7 +229,7 @@ public class UserDAO {
 		try {
 			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathArr[0] + "Admin.txt"), "utf-8"));
 
-			bw.write("Admin/Admin/Admin");
+			bw.write("Admin/Admin/"+String.format("%,d", AdminDAO.getInstance().totalMoney())+"/0");
 
 			bw.close();
 
