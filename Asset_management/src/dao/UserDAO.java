@@ -229,7 +229,7 @@ public class UserDAO {
 		try {
 			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathArr[0] + "Admin.txt"), "utf-8"));
 
-			bw.write("Admin/Admin/"+String.format("%,d", AdminDAO.getInstance().totalMoney())+"/0");
+			bw.write("Admin/Admin/"+AdminDAO.getInstance().totalMoney()+"/0");
 
 			bw.close();
 
