@@ -106,7 +106,8 @@ public class AdLoginPage {
 				case "일반고객":
 					mainFrame.dispose();
 					new LoginPage();
-
+					break;
+					
 				case "로그인":
 
 					String id = idt.getText().trim();
