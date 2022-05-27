@@ -22,6 +22,9 @@ import vo.UserVO;
 public class LoginPage {
 	public LoginPage() {
 		
+		//최고관리자 계정의 기업총자산을 DB에 갱신하기 위해 호출
+		UserDAO.getInstance().adminWrite();
+		
 		//프레임 생성
 		Frame mainFrame = new Frame("로그인");
 		//라벨 생성
