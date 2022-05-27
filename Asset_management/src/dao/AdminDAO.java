@@ -76,7 +76,7 @@ public class AdminDAO {
 
 		// 경로내의 파일리스트를 배열로 저장
 		// 각 폴더명을 ID로 만들 예정, 저장되어있는 회원들의 아이디를 모두 불러오는 작업.
-		File f = new File(path);
+		File f = new File(admin_path);
 		String[] id = f.list();
 
 		// vo에 모든 회원정보 저장
@@ -87,7 +87,7 @@ public class AdminDAO {
 
 				// 경로는 기본경로 + 아이디 + data.txt
 				BufferedReader br = new BufferedReader(
-						new InputStreamReader(new FileInputStream(admin_path + id[i] + "Admin.txt"), "utf-8"));
+						new InputStreamReader(new FileInputStream(admin_path + id[i]), "utf-8"));
 				// line은 읽어오는 용도, content는 line을 저장할 용도
 				String line = "";
 				String content = "";
