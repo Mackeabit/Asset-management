@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -24,22 +26,23 @@ public class AdminPage {
 		// 프레임 생성
 		Frame mainFrame = new Frame("관리자 모드");
 		// Button 생성영역
-		Button btn_cis = new Button("조회");
-		Button btn_cic = new Button("수정");
-		Button btn_cid = new Button("삭제");
-		Button btn_before = new Button("이전페이지");
-		Button btn_reset = new Button("BOOM!");
-		// Lable 생성영역
+		Button lookUpButt = new Button("조회");
+		Button modiButt = new Button("수정");
+		Button delButt = new Button("삭제");
+		Button prevButt = new Button("이전페이지");
+		Button allDelButt = new Button("BOOM!");
+		// Label 생성영역
 		Label lb_ad = new Label("Administrator");
 		Label lb_ci = new Label("회원관리");
+		//관리자 권한에 따른 라벨 변경(최고 관리자만 총자산 나오게 만듬)
 		Label lb_allMoney;
 		Label lb_money;
 		if(vo.getAuth() == 0) {
-			lb_allMoney = new Label(vo.getId()+"계정");
-			lb_money = new Label("");
-		}else {
 			lb_allMoney = new Label("총 자산");
 			lb_money = new Label(dao.totalMoney()+"원");
+		}else {
+			lb_allMoney = new Label(vo.getId()+"계정");
+			lb_money = new Label("");
 		}
 		// Font 생성영역
 		Font font_lb_ad = new Font("", Font.BOLD, 30);
@@ -66,17 +69,17 @@ public class AdminPage {
 		// Font지정 영역
 		lb_ad.setFont(font_lb_ad);
 		lb_ci.setFont(font_Money);
-		btn_reset.setFont(font_lb_su);
+		allDelButt.setFont(font_lb_su);
 		lb_allMoney.setFont(font_Money);
 		lb_money.setFont(font_M);
-		
+		//색상 지정
 		lb_ad.setForeground(Color.WHITE);
 		lb_ci.setForeground(Color.WHITE);
 		lb_allMoney.setForeground(Color.WHITE);
 		lb_money.setForeground(Color.WHITE);
 		mainFrame.setBackground(Color.DARK_GRAY);
-		btn_reset.setBackground(Color.red);
-		btn_reset.setForeground(Color.WHITE);
+		allDelButt.setBackground(Color.red);
+		allDelButt.setForeground(Color.WHITE);
 		
 		// setBounds지정 영역
 		mainFrame.setBounds(480, 200, 450, 550);
@@ -84,10 +87,10 @@ public class AdminPage {
 		lb_allMoney.setBounds(190,280,200,70);//총자산
 		lb_money.setBounds(150,335,300,40);// 432432원
 		lb_ci.setBounds(185, 150, 100, 40);//회원관리
-		btn_cis.setBounds(140, 200, 50, 30);//조회
-		btn_cic.setBounds(200, 200, 50, 30);//수정
-		btn_cid.setBounds(260, 200, 50, 30);//삭제
-		btn_reset.setBounds(370,500,60,30);//파괴
+		lookUpButt.setBounds(140, 200, 50, 30);//조회
+		modiButt.setBounds(200, 200, 50, 30);//수정
+		delButt.setBounds(260, 200, 50, 30);//삭제
+		allDelButt.setBounds(370,500,60,30);//파괴
 		bm.setBounds(315,490,50,50);//파괴아이콘
 		
 		// 프레임 추가 영역
@@ -95,11 +98,56 @@ public class AdminPage {
 		mainFrame.add(lb_allMoney);
 		mainFrame.add(lb_ad);
 		mainFrame.add(lb_ci);
-		mainFrame.add(btn_cis);
-		mainFrame.add(btn_cic);
-		mainFrame.add(btn_cid);
-		mainFrame.add(btn_reset);
+		mainFrame.add(lookUpButt);
+		mainFrame.add(modiButt);
+		mainFrame.add(delButt);
+		mainFrame.add(allDelButt);
 		mainFrame.add(bm);
+		
+		//버튼 동작 설정
+		ActionListener al = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				switch(e.getActionCommand()) {
+				
+				case"조회":
+					
+					mainFrame.dispose();
+					break;
+					
+				
+				case"수정" :
+					
+					mainFrame.dispose();
+					break;
+				
+				case"삭제":
+					mainFrame.dispose();
+					break;
+					
+				case"이전페이지":
+					mainFrame.dispose();
+					new AdLoginPage();
+					break;
+					
+				case"BOOM!":
+					mainFrame.dispose();
+					break;
+					
+				}//switch
+				
+			}
+		};
+		
+		
+		//버튼 활성화
+		lookUpButt.addActionListener(al);
+		modiButt.addActionListener(al);
+		delButt.addActionListener(al);
+		prevButt.addActionListener(al);
+		allDelButt.addActionListener(al);
 		
 	}
 }
