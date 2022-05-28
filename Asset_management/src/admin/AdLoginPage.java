@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 
 import dao.AdminDAO;
 import user.LoginPage;
-import user.UserPage;
 import vo.AdminVO;
 
 public class AdLoginPage {
