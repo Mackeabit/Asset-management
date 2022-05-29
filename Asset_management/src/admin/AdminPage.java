@@ -113,8 +113,8 @@ public class AdminPage {
 				switch(e.getActionCommand()) {
 				
 				case"조회":
-					
 					mainFrame.dispose();
+					new InfoLookUp(vo);
 					break;
 					
 				
