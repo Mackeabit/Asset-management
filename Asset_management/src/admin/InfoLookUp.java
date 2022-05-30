@@ -76,12 +76,12 @@ public class InfoLookUp {
 				if(vo == null) {
 					JOptionPane.showMessageDialog(mainFrame, "존재하지 않는 아이디입니다.");
 				}else {
-					
+					new DetailsInfo(vo, adVO);
 				}
 			}
 		}); 
 		
-		//텍스트 에어리어에 불러올 코드
+		//텍스트 에어리어에 유저정보 불러올 코드
 		List<UserVO> list = UserDAO.getInstance().selectList();
 		for(int i = 0 ; i<list.size(); i++) {
 			

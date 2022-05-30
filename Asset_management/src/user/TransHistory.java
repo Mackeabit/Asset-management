@@ -50,7 +50,6 @@ public class TransHistory {
 		
 		inquryL.setFont(subFont);
 		accountM.setFont(mainFont);
-//		ta.setFont(subFont);
 		inquryL.setForeground(Color.DARK_GRAY);
 		accountL.setForeground(Color.DARK_GRAY);
 		accountM.setForeground(Color.DARK_GRAY);
