@@ -99,7 +99,6 @@ public class UserDAO {
 			for (int i = 0; i < list.size(); i++) {
 				//전체 유저수만큼 for문을 돌리며 vo에 유저정보 넣기
 				vo = list.get(i);
-				
 				//vo에 들어간 유저정보의 아이디와 파라미터로 보내진 아이디가 동일다면 break;
 				//아니라면 null값으로 초기화 반복
 				if (vo.getId().equals(find)) {
@@ -107,7 +106,6 @@ public class UserDAO {
 				}else {
 					vo = null;
 				}
-
 			}
 		}
 		
