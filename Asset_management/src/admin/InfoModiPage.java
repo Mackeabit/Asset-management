@@ -9,6 +9,8 @@ import java.awt.TextArea;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -31,7 +33,7 @@ public class InfoModiPage {
 		Label idLabel = new Label("ID");
 		//버튼 생성
 		Button searchButt = new Button("조회");
-		Button preButt = new Button("돌아가기");
+		Button preButt = new Button("이전페이지");
 		//폰트 생성
 		Font mainFont = new Font("", Font.BOLD, 30);
 		Font subFont = new Font("", Font.BOLD, 20);
@@ -51,6 +53,7 @@ public class InfoModiPage {
 		infoTF.setEditable(false);
 		
 		//메인프레임 세팅
+		mainFrame.setVisible(true);
 		mainFrame.setResizable(false);
 		mainFrame.setLayout(null);
 		
@@ -85,8 +88,17 @@ public class InfoModiPage {
 		mainFrame.add(infoTF);
 		mainFrame.add(preButt);
 		
-		//버튼 등록
+		//X키 이전화면으로 활성화
+		mainFrame.addWindowListener(new WindowAdapter() {
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				mainFrame.dispose();
+				new AdminPage(adVO);
+			}
+		});
 		
+		//버튼 등록
 		ActionListener al = new ActionListener() {
 			
 			@Override
