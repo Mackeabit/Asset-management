@@ -374,4 +374,18 @@ public class UserDAO {
 
 	}// User db저장
 
+	public void modiInfo(UserVO vo) {
+		
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(path + vo.getId() + "/data.txt"));
+			bw.write(vo.getId() + "/" + vo.getPwd() + "/" + vo.getAccountNumber() + "/"
+					+ String.format("%,d", vo.getMoney()));
+			bw.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 }

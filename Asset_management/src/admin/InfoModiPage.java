@@ -96,18 +96,18 @@ public class InfoModiPage {
 				
 				case"조회":
 					String id = tf_ID.getText();
-					UserVO checkVO = UserDAO.getInstance().selectOne(id);
+					UserVO vo = UserDAO.getInstance().selectOne(id);
 					
 					if(id.equals("")) {
 						JOptionPane.showMessageDialog(mainFrame, "수정할 ID 입력하세요");
 						break;
 					}
 					
-					if(checkVO == null) {
+					if(vo == null) {
 						JOptionPane.showMessageDialog(mainFrame, "유저 정보가 존재하지 않습니다.");
 					}else {
 						mainFrame.dispose();
-						
+						new InfoUpdate(vo,adVO);
 					}
 					break;
 					
