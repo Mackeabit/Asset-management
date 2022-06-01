@@ -119,8 +119,9 @@ public class AdminPage {
 					
 				
 				case"수정" :
-					
 					mainFrame.dispose();
+					new InfoModiPage(vo);
+					System.out.println("??");
 					break;
 				
 				case"삭제":
