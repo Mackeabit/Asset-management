@@ -18,13 +18,15 @@ public class TransHistory {
 
 	public TransHistory(UserVO vo) {
 		
+		String accCon = UserDAO.getInstance().acc(vo);
+		
 		Frame mainFrame = new Frame(vo.getId()+"님의 거래내역");
 		Font mainFont = new Font("", Font.BOLD, 40);
 		Font subFont = new Font("", Font.PLAIN, 20);
 		Label inquryL = new Label("거래 내역",Label.RIGHT);
 		Label accountL = new Label("나의 계좌번호 : "+vo.getAccountNumber(),Label.LEFT);
 		Label accountM = new Label(vo.getMoney()+"원",Label.RIGHT); 
-		TextArea ta = new TextArea(UserDAO.getInstance().acc(vo), 0, 0, TextArea.SCROLLBARS_VERTICAL_ONLY);
+		TextArea ta = new TextArea(accCon, 0, 0, TextArea.SCROLLBARS_VERTICAL_ONLY);
 		Button sendM = new Button("이체");
 		Button back = new Button("뒤로가기");
 		Button logout = new Button("로그아웃");
