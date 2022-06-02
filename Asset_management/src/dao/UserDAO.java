@@ -45,9 +45,7 @@ public class UserDAO {
 		//읽어올 변수 line, 저장할 변수 content
 		String line = "";
 		String content = "";
-
 		BufferedReader br;
-
 		try {
 			//경로에 위치한 txt파일을 content에 저장
 			br = new BufferedReader(
@@ -59,6 +57,7 @@ public class UserDAO {
 				content += line+"\n";
 
 			}
+			br.close();
 
 		} catch (Exception e) {
 		}
@@ -304,8 +303,9 @@ public class UserDAO {
 		for (int i = 0; i < fileList.length; i++) {
 			fileList[i].delete();
 		}
+		
 		file.delete();
-
+		
 		if (!file.exists()) {
 			//폴더가 삭제되었다면 res=1
 			res = 1;
@@ -329,13 +329,11 @@ public class UserDAO {
 		// 보낸사람, 받는 사람 아이디 배열로 저장
 		String[] accArr = { vo1.getId(), vo.getId() };
 
-		BufferedWriter bw;
-
 		try {
 
 			for (int i = 0; i < accArr.length; i++) {
 
-				bw = new BufferedWriter(new FileWriter(path + accArr[i] + "/data.txt"));
+				BufferedWriter bw = new BufferedWriter(new FileWriter(path + accArr[i] + "/data.txt"));
 				
 				//i가 1일땐 받는 사람의 통장잔액을 수정
 				//i가 0일땐 보낸 사람의 통장잔액 수정
@@ -354,7 +352,7 @@ public class UserDAO {
 			for (int i = 0; i < accArr.length; i++) {
 
 				//true값을 줘서 기존 내용 뒤에 써지게 만듬(거래내역은 삭제되면 안되기 때문)
-				bw = new BufferedWriter(new FileWriter(path + accArr[i] + "/Acc.txt", true));
+				BufferedWriter bw = new BufferedWriter(new FileWriter(path + accArr[i] + "/Acc.txt", true));
 				
 				//i가 1일땐 받는 사람의 거래내역을 수정
 				//i가 0일땐 보낸 사람의 거래내역을 수정
@@ -365,7 +363,7 @@ public class UserDAO {
 				} else {
 					bw.write("받은 사람 계좌번호 : " + vo.getAccountNumber() + "\n보낸 금액 : " + String.format("%,d", sendMoney)
 							+ "\n통장 잔액 : " + String.format("%,d", nowMoney) + "\n\n");
-					bw.flush();
+					bw.close();
 				}
 			}
 		} catch (IOException e) {
