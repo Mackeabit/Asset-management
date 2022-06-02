@@ -18,7 +18,7 @@ import vo.AdminVO;
 
 public class AdminPage {
 	
-	public AdminPage(AdminVO vo) {
+	public AdminPage(AdminVO adVO) {
 
 		//dao 생성
 		AdminDAO dao = AdminDAO.getInstance();
@@ -37,11 +37,11 @@ public class AdminPage {
 		//관리자 권한에 따른 라벨 변경(최고 관리자만 총자산 나오게 만듬)
 		Label lb_allMoney;
 		Label lb_money;
-		if(vo.getAuth() == 0) {
+		if(adVO.getAuth() == 0) {
 			lb_allMoney = new Label("총 자산");
 			lb_money = new Label(dao.totalMoney()+"원");
 		}else {
-			lb_allMoney = new Label(vo.getId()+"계정");
+			lb_allMoney = new Label(adVO.getId()+"계정");
 			lb_money = new Label("");
 		}
 		// Font 생성영역
@@ -114,18 +114,18 @@ public class AdminPage {
 				
 				case"조회":
 					mainFrame.dispose();
-					new InfoLookUp(vo);
+					new InfoLookUp(adVO);
 					break;
 					
 				
 				case"수정" :
 					mainFrame.dispose();
-					new InfoModiPage(vo);
-					System.out.println("??");
+					new InfoModiPage(adVO);
 					break;
 				
 				case"삭제":
 					mainFrame.dispose();
+					new DelPage(adVO);
 					break;
 					
 				case"이전페이지":
