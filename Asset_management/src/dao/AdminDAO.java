@@ -1,8 +1,11 @@
 package dao;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +146,49 @@ public class AdminDAO {
 		// res=1 --> 중복값 없음, 사용가능
 		return res;
 	}// checkLIst
+	
+	public int adminWrite(AdminVO vo) {
+		
+		//정상으로 작동했는지 확인하기 위한 코드
+		int res = 0;
+
+		// DB생성 코드 작성
+
+		File f = new File(admin_path);
+
+		if (!f.exists()) {
+			f.mkdirs();
+		}
+
+		BufferedWriter bw;
+
+		try {
+
+			//작성할 내용(id,pwd,account,money)을 배열로 저장
+			String[] content = { vo.getId(), vo.getPwd(), "0", "1"};
+
+			for (int i = 0; i < content.length; i++) {
+				//true값을 줘서 배열안의 값이 모두 다 저장될 수 있게 만듬
+				bw = new BufferedWriter(new FileWriter(admin_path + vo.getId()+".txt", true));
+				if (i == 3) {
+					bw.write(content[i]);
+					bw.close();
+					res = 1;
+					break;
+				}
+
+				bw.write(content[i] + "/");
+				bw.close();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//모두 정상적으로 완료되었다면 res=1
+		return res;
+
+	}// Admin db저장
 	
 	
 }
