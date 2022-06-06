@@ -10,9 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
 import dao.AdminDAO;
 import vo.AdminVO;
 
@@ -30,7 +27,12 @@ public class AdminPage {
 		Button modiButt = new Button("수정");
 		Button delButt = new Button("삭제");
 		Button prevButt = new Button("이전페이지");
-		Button allDelButt = new Button("BOOM!");
+		Button allDelButt;
+		if(adVO.getAuth() == 0) {
+			allDelButt = new Button("관리자 추가");
+		}else {
+			allDelButt = new Button("private");
+		}
 		// Label 생성영역
 		Label lb_ad = new Label("Administrator");
 		Label lb_ci = new Label("회원관리");
@@ -49,8 +51,6 @@ public class AdminPage {
 		Font font_lb_su = new Font("", Font.BOLD, 15);
 		Font font_Money = new Font("",Font.PLAIN,20);
 		Font font_M = new Font("",Font.BOLD,40);
-		ImageIcon icon = new  ImageIcon("src/images2/boom.jpg");
-		JLabel bm = new JLabel(icon);
 		
 		//메인프레인 세팅
 		mainFrame.setVisible(true);
@@ -62,7 +62,8 @@ public class AdminPage {
 			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+				mainFrame.dispose();
+				new AdLoginPage();
 			}
 		});
 		
@@ -90,8 +91,7 @@ public class AdminPage {
 		lookUpButt.setBounds(140, 200, 50, 30);//조회
 		modiButt.setBounds(200, 200, 50, 30);//수정
 		delButt.setBounds(260, 200, 50, 30);//삭제
-		allDelButt.setBounds(370,500,60,30);//파괴
-		bm.setBounds(315,490,50,50);//파괴아이콘
+		allDelButt.setBounds(330,500,100,30);//관리자추가
 		
 		// 프레임 추가 영역
 		mainFrame.add(lb_money);
@@ -101,8 +101,9 @@ public class AdminPage {
 		mainFrame.add(lookUpButt);
 		mainFrame.add(modiButt);
 		mainFrame.add(delButt);
-		mainFrame.add(allDelButt);
-		mainFrame.add(bm);
+		if(adVO.getAuth() == 0) {
+			mainFrame.add(allDelButt);
+		}
 		
 		//버튼 동작 설정
 		ActionListener al = new ActionListener() {
@@ -133,8 +134,9 @@ public class AdminPage {
 					new AdLoginPage();
 					break;
 					
-				case"BOOM!":
+				case"관리자 추가":
 					mainFrame.dispose();
+					new AddAdminPage(adVO);
 					break;
 					
 				}//switch
