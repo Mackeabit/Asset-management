@@ -120,6 +120,8 @@ public class SignPage {
 		mainFrame.add(checkID);
 		mainFrame.add(checkID2);
 		mainFrame.add(actf);
+		mainFrame.add(idml);
+		mainFrame.add(acml);
 		mainFrame.add(goMain);
 
 		// 중복체크 버튼 설정(true값 입력시 수정활성화)
